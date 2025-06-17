@@ -1,0 +1,84 @@
+
+.main-content {
+  margin-top: 16px;
+  padding: 16px;
+}
+
+.button-bar-wrapper {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  margin-bottom: 16px;
+  gap: 8px;
+}
+
+.scrollable-button-group {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  flex: 1;
+  scrollbar-width: none;
+}
+
+.scrollable-button-group::-webkit-scrollbar {
+  display: none;
+}
+
+.oval-button {
+  border-radius: 9px;
+  padding: 0 16px;
+  height: 36px;
+  white-space: nowrap;
+  font-size: medium;
+}
+.menu-btn {
+  border: 1px solid #ced4da; /* <-- Adds full visible grey border */
+  border-radius: 9px;
+  padding: 0 16px;
+  height: 36px;
+  white-space: nowrap;
+  font-size: medium;
+  background-color: white;
+}
+.add-category-btn {
+  flex-shrink: 0;
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recipe-item {
+  padding: 10px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.tag {
+  font-style: italic;
+  font-size: 14px;
+  color: gray;
+}
+
+.top-container {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  gap: 10px;
+  margin: 16px;
+  align-items: center;
+}
+
+.menu-button,
+.search-button {
+  height: 40px;
+  font-size: 16px;
+  border: none;
+  border-radius: 9px;
+}
+
+.search-button {
+  background-color: #007bff;
+  color: white;
+}
+
