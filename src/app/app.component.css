@@ -1,7 +1,29 @@
+.top-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+  background-color: #ffffff;
+  font-family: 'Poppins', sans-serif; /* Optional, use your preferred font */
+}
+
+.app-name {
+  font-size: 18px;
+  font-weight: 500;
+  color: #1890ff;
+  
+}
+
+.menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+  user-select: none;
+}
 
 .main-content {
-  margin-top: 16px;
   padding: 16px;
+  position: relative;
+  min-height: 100vh;
 }
 
 .button-bar-wrapper {
@@ -31,15 +53,6 @@
   white-space: nowrap;
   font-size: medium;
 }
-.menu-btn {
-  border: 1px solid #ced4da; /* <-- Adds full visible grey border */
-  border-radius: 9px;
-  padding: 0 16px;
-  height: 36px;
-  white-space: nowrap;
-  font-size: medium;
-  background-color: white;
-}
 .add-category-btn {
   flex-shrink: 0;
   background: #fafafa;
@@ -61,24 +74,58 @@
   color: gray;
 }
 
-.top-container {
-  display: grid;
-  grid-template-columns: 20% 80%;
-  gap: 10px;
-  margin: 16px;
-  align-items: center;
-}
-
-.menu-button,
-.search-button {
-  height: 40px;
-  font-size: 16px;
+/* Floating button */
+.floating-plus-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  background-color: #1890ff;
   border: none;
-  border-radius: 9px;
+  border-radius: 50%;
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow: visible;
 }
 
-.search-button {
-  background-color: #007bff;
-  color: white;
+/* Plus sign */
+.plus-icon {
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Looping animation effect */
+.zoom-effect-loop {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #1890ff;
+  opacity: 0.4;
+  animation: zoomFadeLoop 1.5s infinite ease-in-out;
+  z-index: 0;
+}
+
+@keyframes zoomFadeLoop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
 }
 

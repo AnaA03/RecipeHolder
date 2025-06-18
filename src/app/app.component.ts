@@ -42,40 +42,48 @@ export class AppComponent implements OnInit {
   constructor(@Inject(DOCUMENT) private document: Document) { }
 
 ngOnInit(): void {
-  if (!this.document.getElementById('cse-script')) {
+  const existingScript = this.document.getElementById('cse-script');
+  if (!existingScript) {
     const script = this.document.createElement('script');
     script.id = 'cse-script';
     script.src = 'https://cse.google.com/cse.js?cx=94386f84d0c7346d1';
     script.async = true;
 
     script.onload = () => {
-      const interval = setInterval(() => {
-        const cse = (window as any).google?.search?.cse?.element;
-        if (cse && cse.render) {
-          clearInterval(interval);
-          cse.render({
-            div: "cse-search-container",
-            tag: "search",
-            attributes: {
-              enableAutoComplete: true
-              // Add more if needed
-            }
-          });
-
-          // Set placeholder text manually
-/*           setTimeout(() => {
-            const input = this.document.querySelector('input.gsc-input') as HTMLInputElement;
-            if (input) input.placeholder = 'Search recipes';
-          }, 500); */
-        }
-      }, 200);
+      this.tryRenderSearchBox();
     };
 
     this.document.head.appendChild(script);
+  } else {
+    this.tryRenderSearchBox();
   }
 }
 
+private tryRenderSearchBox(attempts = 0) {
+  const maxAttempts = 10;
 
+  const interval = setInterval(() => {
+    const cse = (window as any).google?.search?.cse?.element;
+    const container = this.document.getElementById('cse-search-container');
+
+    if (cse?.render && container) {
+      clearInterval(interval);
+
+      cse.render({
+        div: 'cse-search-container',
+        tag: 'search',
+        attributes: {
+          enableAutoComplete: true
+        }
+      });
+    }
+
+    if (++attempts >= maxAttempts) {
+      clearInterval(interval);
+      console.warn('Google CSE failed to load in time.');
+    }
+  }, 300);
+}
 
   openMenu() {
     this.sidebarVisible = true;
