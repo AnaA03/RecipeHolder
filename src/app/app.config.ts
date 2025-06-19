@@ -10,8 +10,13 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 
+
 registerLocaleData(hi);
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideNzI18n(hi_IN), importProvidersFrom(FormsModule), provideAnimationsAsync(), provideHttpClient()]
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }),
+     provideRouter(routes), provideNzI18n(hi_IN), importProvidersFrom(FormsModule),
+      provideAnimationsAsync(),
+       provideHttpClient(),
+      provideRouter(routes),]
 };
