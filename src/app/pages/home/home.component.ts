@@ -5,6 +5,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { Router, RouterModule } from '@angular/router';
 import { OnInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { AddCategoryComponent } from '../add-category/add-category.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { Category, RecipeService } from '../../services/recipe.service';
 
 @Component({
   selector: 'app-home',
@@ -20,8 +23,15 @@ import { DOCUMENT } from '@angular/common';
 })
 export class HomeComponent implements OnInit {
   sidebarVisible = false;
-  categories = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Snacks', 'Drinks', 'Dessert'];
-  selectedCategory = 'All';
+  categories: Category[] = [];
+  selectedCategory: string | null = 'All';
+
+  // Predefined categories
+  predefinedCategories: Category[] = [
+    { name: 'All' },
+    { name: 'Breakfast' },
+    { name: 'Lunch' }
+  ];
 
   recipes = [
     { name: 'Pancakes', category: 'Breakfast' },
@@ -33,57 +43,30 @@ export class HomeComponent implements OnInit {
     { name: 'Ice Cream', category: 'Dessert' }
   ];
 
+  constructor(@Inject(DOCUMENT) private document: Document, private router: Router,
+    private modal: NzModalService,
+    private recipeService: RecipeService) { }
+
+  ngOnInit() {
+    this.loadCategories();
+
+  }
   get filteredRecipes() {
-    return this.selectedCategory === 'All'
-      ? this.recipes
-      : this.recipes.filter(recipe => recipe.category === this.selectedCategory);
+    if (!this.selectedCategory || this.selectedCategory === 'All') {
+      return this.recipes;
+    }
+    return this.recipes.filter(recipe => recipe.category === this.selectedCategory);
   }
 
-  constructor(@Inject(DOCUMENT) private document: Document,private router: Router) { }
-
-ngOnInit(): void {
-  const existingScript = this.document.getElementById('cse-script');
-  if (!existingScript) {
-    const script = this.document.createElement('script');
-    script.id = 'cse-script';
-    script.src = 'https://cse.google.com/cse.js?cx=94386f84d0c7346d1';
-    script.async = true;
-
-    script.onload = () => {
-      this.tryRenderSearchBox();
-    };
-
-    this.document.head.appendChild(script);
-  } else {
-    this.tryRenderSearchBox();
+  loadCategories(): void {
+    this.recipeService.getCategories().subscribe((cats) => {
+      // Filter out duplicates (if user already added "Breakfast" etc. in Firestore)
+      const dynamicCats = cats.filter(cat =>
+        !this.predefinedCategories.some(pre => pre.name === cat.name)
+      );
+      this.categories = [...this.predefinedCategories, ...dynamicCats];
+    });
   }
-}
-
-private tryRenderSearchBox(attempts = 0) {
-  const maxAttempts = 10;
-
-  const interval = setInterval(() => {
-    const cse = (window as any).google?.search?.cse?.element;
-    const container = this.document.getElementById('cse-search-container');
-
-    if (cse?.render && container) {
-      clearInterval(interval);
-
-      cse.render({
-        div: 'cse-search-container',
-        tag: 'search',
-        attributes: {
-          enableAutoComplete: true
-        }
-      });
-    }
-
-    if (++attempts >= maxAttempts) {
-      clearInterval(interval);
-      console.warn('Google CSE failed to load in time.');
-    }
-  }, 300);
-}
 
   openMenu() {
     this.sidebarVisible = true;
@@ -93,20 +76,34 @@ private tryRenderSearchBox(attempts = 0) {
     this.sidebarVisible = false;
   }
 
-  onSelectCategory(cat: string) {
+  onSelectCategory(cat: string | null): void {
     this.selectedCategory = cat;
+    console.log('Selected category:', cat);
     this.closeMenu();
   }
 
-  onAddCategory() {
-    const newCategory = prompt('Enter new category name:');
-    if (newCategory && !this.categories.includes(newCategory)) {
-      this.categories.push(newCategory);
-    }
+  onAddCategory(): void {
+    const modalRef = this.modal.create({
+      /* nzTitle: 'Add Category', */
+      nzContent: AddCategoryComponent,
+      nzFooter: null
+    });
+
+    modalRef.afterClose.subscribe((categoryName: string) => {
+      if (categoryName) {
+        console.log('Added category:', categoryName);
+        // Firestore auto-sync handles refresh
+      }
+    });
   }
+
   onAddRecipeDetails() {
     console.log("RecipeAdd")
-    this.router.navigate(['/recipe']);
+    this.router.navigate(['/recipe'], {
+      state: {
+        categories: this.categories
+      }
+    });
   }
 }
 

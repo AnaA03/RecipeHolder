@@ -7,13 +7,6 @@
   font-family: 'Poppins', sans-serif; /* Optional, use your preferred font */
 }
 
-.app-name {
-  font-size: 18px;
-  font-weight: 500;
-  color: #1890ff;
-  
-}
-
 .menu-icon {
   font-size: 24px;
   cursor: pointer;
@@ -89,7 +82,7 @@
   font-weight: bold;
   display: flex;
   justify-content: center;
-  align-items: center;
+ /*  align-items: center; */
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 1000;
@@ -128,4 +121,3 @@
     opacity: 0;
   }
 }
-

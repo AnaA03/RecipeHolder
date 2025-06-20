@@ -1,4 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+html {
+  font-size: 16px; 
+}
+
 body {
   font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+}
+ /* App name or header */
+.app-name {
+  font-size: 1.25rem; /* // 20px */
+  font-weight: 600;
+  color: #1890ff;
+}
+
+ /* Subtitles or section titles */
+.subtitle {
+  font-size: 1.125rem; /* 18px */
+  font-weight: 500;
+  color: #1890ff;
+}
+
+ /* Default body text */
+.text-default {
+  font-size: 1rem; /* 16px */
+}
+
+/* Small text (meta info, timestamps) */
+.text-small {
+  font-size: 0.875rem; 
+  color: #666;
+}
+::ng-deep .ant-form-item-label > label {
+  font-size: 16px !important;
 }
