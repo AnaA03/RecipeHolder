@@ -16,7 +16,7 @@
 .main-content {
   padding: 16px;
   position: relative;
-  min-height: 100vh;
+/*   min-height: 100vh; */
 }
 
 .button-bar-wrapper {
@@ -59,6 +59,7 @@
   background-color: #f7f7f7;
   border-radius: 8px;
   font-size: 16px;
+  margin-bottom: 16px;
 }
 
 .tag {

@@ -14,9 +14,35 @@ import { RecipeService } from '../../services/recipe.service';
   styleUrl: './add-category.component.css'
 })
 export class AddCategoryComponent {
-categoryName = '';
+  categoryName = '';
+  categoryList: string[] = [
+    'Veg Curries',
+    'Dessert',
+    'Drinks',
+    'Rice dishes',
+    'Snacks',
+    'Breads',
+    'Veg dishes',
+    'Paneer dishes'
+  ];
+  randomSuggestions: string[] = [];
 
-  constructor(private modalRef: NzModalRef, private recipeService: RecipeService) {}
+  ngOnInit(): void {
+    this.randomSuggestions = this.pickRandomSuggestions();
+  }
+
+  constructor(private modalRef: NzModalRef, private recipeService: RecipeService) { }
+
+  pickRandomSuggestions(): string[] {
+    const shuffled = [...this.categoryList].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, Math.min(3, this.categoryList.length));
+  }
+
+  useSuggestion(suggestion: string): void {
+    this.categoryName = suggestion;
+    this.randomSuggestions = this.randomSuggestions.filter(item => item !== suggestion);
+  }
+
 
   onAdd(): void {
     const name = this.categoryName.trim();

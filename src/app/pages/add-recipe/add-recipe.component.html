@@ -56,7 +56,7 @@
           <nz-select formControlName="category" placeholder="Select category">
             <nz-option
               *ngFor="let cat of categories"
-              [nzValue]="cat.name"
+              [nzValue]="cat.id"
               [nzLabel]="cat.name"
             ></nz-option>
           </nz-select>

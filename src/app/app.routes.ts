@@ -7,6 +7,10 @@ export const routes: Routes = [
     path: '',
     loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent)
   },
+    {
+    path: 'home',
+    loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent)
+  },
   {
     path: 'recipe/:name',
       loadComponent: () => import('./pages/recipe-details/recipe-details.component').then(m => m.RecipeDetailsComponent)

@@ -7,7 +7,8 @@ import { OnInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { AddCategoryComponent } from '../add-category/add-category.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { Category, RecipeService } from '../../services/recipe.service';
+import { Category, Recipe, RecipeService } from '../../services/recipe.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -21,50 +22,88 @@ import { Category, RecipeService } from '../../services/recipe.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
+
+
 export class HomeComponent implements OnInit {
   sidebarVisible = false;
   categories: Category[] = [];
-  selectedCategory: string | null = 'All';
+  selectedCategoryId: string | null = null;
+  recipes: Recipe[] = [];
 
-  // Predefined categories
-  predefinedCategories: Category[] = [
-    { name: 'All' },
-    { name: 'Breakfast' },
-    { name: 'Lunch' }
-  ];
-
-  recipes = [
-    { name: 'Pancakes', category: 'Breakfast' },
-    { name: 'Omelette', category: 'Breakfast' },
-    { name: 'Burger', category: 'Lunch' },
-    { name: 'Pasta', category: 'Dinner' },
-    { name: 'Fries', category: 'Snacks' },
-    { name: 'Lemonade', category: 'Drinks' },
-    { name: 'Ice Cream', category: 'Dessert' }
-  ];
-
-  constructor(@Inject(DOCUMENT) private document: Document, private router: Router,
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private router: Router,
     private modal: NzModalService,
-    private recipeService: RecipeService) { }
+    private recipeService: RecipeService
+  ) { }
 
-  ngOnInit() {
-    this.loadCategories();
+ngOnInit() {
+  this.seedPredefinedCategories(); // seed categories
+  this.loadRecipes();              // load recipes
+}
 
-  }
-  get filteredRecipes() {
-    if (!this.selectedCategory || this.selectedCategory === 'All') {
-      return this.recipes;
+seedPredefinedCategories(): void {
+  firstValueFrom(this.recipeService.getCategories()).then(async (userCats) => {
+    const userCategoryNames = userCats.map(c => c.name.toLowerCase());
+    const predefined = ['Breakfast', 'Lunch', 'Dinner'];
+
+    for (const name of predefined) {
+      if (!userCategoryNames.includes(name.toLowerCase())) {
+        await this.recipeService.addCategory(name);
+      }
     }
-    return this.recipes.filter(recipe => recipe.category === this.selectedCategory);
+
+    // ✅ After insertions, re-subscribe to fresh list
+    this.recipeService.getCategories().subscribe((freshCats) => {
+      const allCategory: Category = { id: null, name: 'All', userId: '' };
+      this.categories = [allCategory, ...freshCats];
+    });
+  });
+}
+
+  loadRecipes(): void {
+    this.recipeService.getRecipes().subscribe((data) => {
+      this.recipes = data;
+      console.log('Loaded recipes:', this.recipes);
+    });
   }
 
-  loadCategories(): void {
-    this.recipeService.getCategories().subscribe((cats) => {
-      // Filter out duplicates (if user already added "Breakfast" etc. in Firestore)
-      const dynamicCats = cats.filter(cat =>
-        !this.predefinedCategories.some(pre => pre.name === cat.name)
-      );
-      this.categories = [...this.predefinedCategories, ...dynamicCats];
+  get filteredRecipes() {
+    if (!this.selectedCategoryId) return this.recipes;
+
+    return this.recipes.filter(recipe => recipe.categoryId === this.selectedCategoryId);
+  }
+
+  onSelectCategory(catId: string | null): void {
+    this.selectedCategoryId = catId;
+    this.closeMenu();
+  }
+
+
+
+  getCategoryNameById(id: string): string {
+    const category = this.categories.find(cat => cat.id === id);
+    return category?.name || 'Unknown';
+  }
+
+
+
+  onAddCategory(): void {
+    const modalRef = this.modal.create({
+      nzContent: AddCategoryComponent,
+      nzFooter: null
+    });
+
+    modalRef.afterClose.subscribe((categoryName: string) => {
+      if (categoryName) {
+        console.log('Added category:', categoryName);
+      }
+    });
+  }
+
+  onAddRecipeDetails() {
+    this.router.navigate(['/recipe'], {
+      state: { categories: this.categories }
     });
   }
 
@@ -75,36 +114,7 @@ export class HomeComponent implements OnInit {
   closeMenu() {
     this.sidebarVisible = false;
   }
-
-  onSelectCategory(cat: string | null): void {
-    this.selectedCategory = cat;
-    console.log('Selected category:', cat);
-    this.closeMenu();
-  }
-
-  onAddCategory(): void {
-    const modalRef = this.modal.create({
-      /* nzTitle: 'Add Category', */
-      nzContent: AddCategoryComponent,
-      nzFooter: null
-    });
-
-    modalRef.afterClose.subscribe((categoryName: string) => {
-      if (categoryName) {
-        console.log('Added category:', categoryName);
-        // Firestore auto-sync handles refresh
-      }
-    });
-  }
-
-  onAddRecipeDetails() {
-    console.log("RecipeAdd")
-    this.router.navigate(['/recipe'], {
-      state: {
-        categories: this.categories
-      }
-    });
-  }
 }
+
 
 

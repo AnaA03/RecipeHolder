@@ -31,8 +31,8 @@
       <li
         class="list-group-item"
         *ngFor="let cat of categories"
-        (click)="onSelectCategory(cat.name)"
-        [class.active]="cat.name === selectedCategory"
+        (click)="onSelectCategory(cat.id)"
+        [class.active]="selectedCategoryId === cat.id"
         style="cursor: pointer"
       >
         {{ cat.name }}
@@ -49,9 +49,10 @@
       <button
         *ngFor="let category of categories"
         nz-button
-        [nzType]="category.name === selectedCategory ? 'primary' : 'default'"
+        [nzType]="selectedCategoryId === category.id ? 'primary' : 'default'"
         class="oval-button"
-        (click)="onSelectCategory(category.name)"
+        (click)="onSelectCategory(category.id)"
+
       >
         {{ category.name }}
       </button>
@@ -69,15 +70,19 @@
   <!-- 🧾 Recipe List -->
   <div class="recipe-list">
     <div *ngFor="let recipe of filteredRecipes" class="recipe-item">
-      🍽️ {{ recipe.name }} <span class="tag">({{ recipe.category }})</span>
+      {{ recipe.recipeName }}
+      <span class="tag"> ({{ getCategoryNameById(recipe.categoryId) }}) </span>
+
+      <br />
+      <!--     <a [href]="recipe.recipeLink" target="_blank">{{ recipe.recipeLink }}</a><br>
+     {{ recipe.recipeDesc }} -->
     </div>
   </div>
 
   <!-- Code for bounce add button-->
   <!-- Floating Plus Button with animation span -->
-<button class="floating-plus-btn" (click)="onAddRecipeDetails()">
-  <span class="zoom-effect-loop"></span>
-  <span class="plus-icon">+</span>
-</button>
-
+  <button class="floating-plus-btn" (click)="onAddRecipeDetails()">
+    <span class="zoom-effect-loop"></span>
+    <span class="plus-icon">+</span>
+  </button>
 </div>

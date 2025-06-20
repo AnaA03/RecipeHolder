@@ -6,7 +6,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { Router } from '@angular/router';
-import { Category } from '../../services/recipe.service';
+import { Category, RecipeService } from '../../services/recipe.service';
 
 @Component({
   standalone: true,
@@ -37,7 +37,7 @@ checkScreen() {
 }
 
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, private recipeService: RecipeService) {
      const nav = this.router.getCurrentNavigation();
   const state = nav?.extras.state as { categories: Category[] };
   this.categories = state?.categories || [];
@@ -51,12 +51,25 @@ checkScreen() {
     });
   }
 
-  onSubmit(): void {
-    if (this.recipeForm.valid) {
-      console.log('Recipe submitted:', this.recipeForm.value);
-      // TODO: handle submission (e.g., API call)
-    }
+ onSubmit(): void {
+  if (this.recipeForm.valid) {
+    const formValue = this.recipeForm.value;
+
+    const recipePayload = {
+      recipeName: formValue.name,
+      recipeLink: formValue.link,
+      recipeDesc: formValue.description,
+      categoryId: formValue.category
+    };
+
+    this.recipeService.addRecipe(recipePayload).then(() => {
+      console.log('Recipe added successfully',recipePayload);
+      this.router.navigate(['/home']); // Navigate to home or wherever needed
+    }).catch(err => {
+      console.error('Error adding recipe:', err);
+    });
   }
+}
 
   onCancel(): void {
     this.recipeForm.reset();
