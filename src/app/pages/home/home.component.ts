@@ -9,6 +9,7 @@ import { AddCategoryComponent } from '../add-category/add-category.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Category, Recipe, RecipeService } from '../../services/recipe.service';
 import { firstValueFrom } from 'rxjs';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'app-home',
@@ -114,7 +115,17 @@ seedPredefinedCategories(): void {
   closeMenu() {
     this.sidebarVisible = false;
   }
+
+
+onRecipeClick(recipe: Recipe): void {
+  console.log('Clicked recipe:', recipe);
+  // You can navigate or open a modal, e.g.
+ this.router.navigate(['/recipedetails', recipe.id]);
+
+}
+onManageCategory(){
+  this.router.navigate(['/managecategory']);
 }
 
-
+}
 

@@ -1,6 +1,6 @@
 <div class="top-container">
   <div class="app-name">RecipeHolder</div>
-  <div class="menu-icon">⋮</div>
+  <div class="menu-icon" (click)="onManageCategory()">⋮</div>
 </div>
 
 <!-- Sidebar Menu -->
@@ -51,9 +51,7 @@
         nz-button
         [nzType]="selectedCategoryId === category.id ? 'primary' : 'default'"
         class="oval-button"
-        (click)="onSelectCategory(category.id)"
-
-      >
+        (click)="onSelectCategory(category.id)">
         {{ category.name }}
       </button>
     </div>
@@ -68,16 +66,19 @@
   </div>
 
   <!-- 🧾 Recipe List -->
-  <div class="recipe-list">
-    <div *ngFor="let recipe of filteredRecipes" class="recipe-item">
-      {{ recipe.recipeName }}
-      <span class="tag"> ({{ getCategoryNameById(recipe.categoryId) }}) </span>
-
-      <br />
-      <!--     <a [href]="recipe.recipeLink" target="_blank">{{ recipe.recipeLink }}</a><br>
-     {{ recipe.recipeDesc }} -->
-    </div>
+<div class="recipe-list">
+  <div 
+    *ngFor="let recipe of filteredRecipes" 
+    class="recipe-item"
+    (click)="onRecipeClick(recipe)"
+    style="cursor: pointer;"
+  >
+    {{ recipe.recipeName }}
+    <span class="tag">({{ getCategoryNameById(recipe.categoryId) }})</span>
+    <br />
   </div>
+</div>
+
 
   <!-- Code for bounce add button-->
   <!-- Floating Plus Button with animation span -->
