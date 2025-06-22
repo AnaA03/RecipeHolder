@@ -5,7 +5,8 @@ import {
   collectionData,
   addDoc,
   query,
-  where
+  where,
+  docData
 } from '@angular/fire/firestore';
 import { doc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -88,4 +89,14 @@ export class RecipeService {
     const q = query(recipeRef, where('userId', '==', userId));
     return collectionData(q, { idField: 'id' }) as Observable<Recipe[]>;
   }
+
+  getRecipeById(id: string): Observable<Recipe> {
+    const recipeDoc = doc(this.firestore, `recipes/${id}`);
+    return docData(recipeDoc, { idField: 'id' }) as Observable<Recipe>;
+  }
+
+  deleteRecipe(id: string) {
+  const recipeDoc = doc(this.firestore, 'recipes', id);
+  return deleteDoc(recipeDoc);
+}
 }

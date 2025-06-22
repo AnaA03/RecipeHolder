@@ -80,14 +80,10 @@ seedPredefinedCategories(): void {
     this.closeMenu();
   }
 
-
-
   getCategoryNameById(id: string): string {
     const category = this.categories.find(cat => cat.id === id);
     return category?.name || 'Unknown';
   }
-
-
 
   onAddCategory(): void {
     const modalRef = this.modal.create({
@@ -116,12 +112,9 @@ seedPredefinedCategories(): void {
     this.sidebarVisible = false;
   }
 
-
 onRecipeClick(recipe: Recipe): void {
   console.log('Clicked recipe:', recipe);
-  // You can navigate or open a modal, e.g.
  this.router.navigate(['/recipedetails', recipe.id]);
-
 }
 onManageCategory(){
   this.router.navigate(['/managecategory']);

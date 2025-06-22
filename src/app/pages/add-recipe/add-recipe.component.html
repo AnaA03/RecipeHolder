@@ -1,13 +1,14 @@
-<div class="page-container">
-  <!-- Top Container: Google-style Search -->
-  <div class="top-container">
-    <input
-      type="text"
-      class="search-bar"
-      placeholder="🔍 Search recipes"
-    />
-  </div>
-
+<div class="header-container">
+  <button nz-button nzType="text" (click)="goBack()">
+    <i nz-icon nzType="arrow-left"></i>
+  </button>
+  <p class="center-title">Add Recipe</p>
+</div>
+<div class="search-container">
+<div id="search-box">
+  <div class="gcse-search"></div>
+</div>
+</div>
   <!-- Main Container: Recipe Form -->
   <div class="main-container">
     <form
@@ -24,6 +25,14 @@
             formControlName="name"
             placeholder="Enter recipe name"
           />
+          <div
+            *ngIf="
+              recipeForm.get('name')?.invalid && recipeForm.get('name')?.touched
+            "
+            class="error-text"
+          >
+            Recipe name is required.
+          </div>
         </nz-form-control>
       </nz-form-item>
 
@@ -35,6 +44,19 @@
             formControlName="link"
             placeholder="Enter recipe URL"
           />
+          <div
+            *ngIf="
+              recipeForm.get('link')?.touched && recipeForm.get('link')?.invalid
+            "
+            class="error-text"
+          >
+            <span *ngIf="recipeForm.get('link')?.errors?.['required']">
+              Recipe link is required.
+            </span>
+            <span *ngIf="recipeForm.get('link')?.errors?.['pattern']">
+              Link is not valid.
+            </span>
+          </div>
         </nz-form-control>
       </nz-form-item>
 
@@ -60,18 +82,23 @@
               [nzLabel]="cat.name"
             ></nz-option>
           </nz-select>
+          <div *ngIf="recipeForm.get('category')?.invalid && recipeForm.get('category')?.touched" class="error-text">
+            Category is required.
+          </div>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-control [nzSpan]="isMobile ? 24 : 14" [nzOffset]="isMobile ? 0 : 6">
+        <nz-form-control
+          [nzSpan]="isMobile ? 24 : 14"
+          [nzOffset]="isMobile ? 0 : 6"
+        >
           <button nz-button nzType="default" (click)="onCancel()">
             Cancel
           </button>
           <button
             nz-button
             nzType="primary"
-            [disabled]="!recipeForm.valid"
             style="margin-left: 16px"
           >
             Add
@@ -80,4 +107,3 @@
       </nz-form-item>
     </form>
   </div>
-</div>
