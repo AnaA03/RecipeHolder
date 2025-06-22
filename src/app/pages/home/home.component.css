@@ -67,7 +67,6 @@
   font-size: 14px;
   color: gray;
 }
-
 /* Floating button */
 .floating-plus-btn {
   position: fixed;
@@ -88,6 +87,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   overflow: visible;
+  font-family: monospace;
 }
 
 /* Plus sign */
@@ -122,3 +122,35 @@
     opacity: 0;
   }
 }
+
+/* Full-page safe wrapper to center and prevent overflow */
+.empty-state-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  width: 100%;
+  overflow: hidden;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Inner content styling */
+.empty-state {
+  text-align: center;
+  max-width: 100%;
+}
+
+/* Responsive image */
+.empty-image {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 16px;
+}
+
+
+
+
