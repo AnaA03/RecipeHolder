@@ -1,9 +1,23 @@
 <nz-card *ngIf="recipe">
   <!-- 🔹 Title -->
-  <h2 style="font-size: 1.25rem; font-weight: 600; color: #1890ff; margin-bottom: 24px;">
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; position: relative;">
+  <!-- Back Arrow (Left) -->
+  <button 
+    nz-button 
+    nzType="text" 
+    (click)="goBack()" 
+    style="position: absolute; left: 0;">
+    <i nz-icon nzType="arrow-left"></i>
+  </button>
+
+  <!-- Centered Title -->
+  <h2 style="flex: 1; text-align: center; font-size: 1.25rem; font-weight: 600; color: #1890ff; margin: 0;">
     {{ recipe.recipeName }}
   </h2>
 
+  <!-- Invisible spacer to balance the back button -->
+  <div style="width: 40px;"></div>
+</div>
   <!-- 🔹 Video -->
   <div class="video-container" *ngIf="embedUrl" style="margin-bottom: 24px;">
     <iframe

@@ -100,4 +100,7 @@ onRemove(): void {
     });
   }
 }
+  goBack(): void {
+    this.router.navigate(['/home']);
+  }
 }
