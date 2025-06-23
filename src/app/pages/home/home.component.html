@@ -27,26 +27,10 @@
     </button>
   </div>
 
-  <!-- 🧾 Recipe List -->
-<!-- <div class="recipe-list">
-  <div 
-    *ngFor="let recipe of filteredRecipes" 
-    class="recipe-item"
-    (click)="onRecipeClick(recipe)"
-    style="cursor: pointer;"
-  >
-    {{ recipe.recipeName }}
-    <span class="tag">({{ getCategoryNameById(recipe.categoryId) }})</span>
-    <br />
-  </div>
-</div> -->
-
 <!-- 🧾 Recipe List -->
 <div class="recipe-list">
-  <!-- Empty State Image -->
-<div class="empty-state">
+<div class="empty-state" *ngIf="filteredRecipes.length === 0">
   <img src="assets/cookingImage.avif" alt="No Recipes" class="empty-image" />
-  <p class="empty-message">No recipes found</p>
 </div>
 
   <!-- Recipes -->
