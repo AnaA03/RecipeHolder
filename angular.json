@@ -37,12 +37,14 @@
   }
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
-              "src/theme.less"
-
+                "src/theme.less",
+                "node_modules/intro.js/minified/introjs.min.css",
+                "src/styles.css",
+                "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/intro.js/minified/intro.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -99,8 +101,7 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
-              
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"   
             ],
             "scripts": []
           }

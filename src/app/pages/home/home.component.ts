@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,  AfterViewInit,ElementRef,ViewChild,signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -9,7 +9,8 @@ import { AddCategoryComponent } from '../add-category/add-category.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Category, Recipe, RecipeService } from '../../services/recipe.service';
 import { firstValueFrom } from 'rxjs';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import introJs from 'intro.js';
+
 
 @Component({
   selector: 'app-home',
@@ -25,7 +26,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 })
 
 
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit,AfterViewInit {
   sidebarVisible = false;
   categories: Category[] = [];
   selectedCategoryId: string | null = null;
@@ -37,6 +38,48 @@ export class HomeComponent implements OnInit {
     private modal: NzModalService,
     private recipeService: RecipeService
   ) { }
+
+    ngAfterViewInit() {
+    introJs().setOptions({
+      steps: [
+        {
+    intro: '👋 Welcome to **RecipeHolder** — your personal space to save, organize, and manage all your favorite recipe links!',
+  },
+  {
+    element: document.querySelector('.add-category-btn') as HTMLElement,
+    intro: '🍽️ Create categories like _Lunch_, _Favorites_, or _Chef Ranveer Recipes_ to organize your saved content.',
+  },
+  {
+    element: document.querySelector('.menu-icon') as HTMLElement,
+    intro: '🛠️ Tap here to **manage your categories** — rename or delete.',
+  },
+  {
+    element: document.querySelector('.floating-plus-btn') as HTMLElement,
+    intro: '➕ Use this button to **add recipe links** — YouTube videos — and save them for future reference.',
+    // click on youtube share button or copy youtube link// Limit to 20 characters
+  },
+  {
+  intro: '🎉 That’s it! You’re all set. Start organizing and never lose a delicious recipe again!',
+}
+/*         {
+          intro: 'Welcome to RecipeHolder app!',
+        },
+        {
+          element: document.querySelector('.add-category-btn') as HTMLElement,
+          intro: 'Click here to add Categories',
+        },
+        {
+          element: document.querySelector('.menu-icon') as HTMLElement,
+          intro: 'Click here to manage categories.',
+        },
+                {
+          element: document.querySelector('.floating-plus-btn') as HTMLElement,
+          intro: 'Click here to add recipe links.',
+        }, */
+      ],
+      showProgress: true
+    }).start();
+  }
 
 ngOnInit() {
   this.seedPredefinedCategories(); // seed categories
@@ -121,4 +164,6 @@ onManageCategory(){
 }
 
 }
+
+
 
