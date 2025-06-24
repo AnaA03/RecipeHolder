@@ -38,12 +38,13 @@ body {
 ::ng-deep .ant-form-item-label > label {
   font-size: 16px !important;
 }
+
 /* Tooltip box customization */
 .introjs-tooltip {
   border-radius: 4px !important; /* Slightly rounded rectangle */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-  border: 1px solid #1890ff;
-  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important; /* Enhanced shadow */
+  border: none !important; /* Remove border */
+  padding: 10px;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -68,9 +69,17 @@ body {
   background-color: #1890ff !important;
 }
 
-/* Highlighted element border */
+/* Highlighted element shadow only */
 .introjs-helperLayer {
-  border: 2px solid #1890ff !important;
+  box-shadow: 0 0 0 4px rgba(24, 144, 255, 0.3) !important; /* Glow effect */
+  border: none !important; /* Remove border */
   border-radius: 4px !important;
 }
+.introjs-tooltip-header {
+  padding: 8px !important; 
+  margin-bottom: 0 !important;
+}
 
+.introjs-tooltiptext{
+  padding: 2px !important; 
+}
