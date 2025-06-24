@@ -37,9 +37,12 @@ export class RecipeService {
     private authService:AuthService
   ) { }
 
-  getUserId(): string {
+getUserId(): string {
   const uid = this.authService.getUserId();
-  if (!uid) throw new Error('User not authenticated');
+  if (!uid) {
+    console.warn('User ID is not ready yet!');
+    throw new Error('User not authenticated');
+  }
   return uid;
 }
 

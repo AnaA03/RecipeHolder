@@ -38,7 +38,7 @@
   </div>
 
   <!-- 🔹 Description -->
-  <div style="margin-bottom: 32px;">
+  <div  *ngIf="recipe.recipeDesc" style="margin-bottom: 32px;">
     <span style="font-weight: 500; color: #555;">Description:</span><br />
     <span>{{ recipe.recipeDesc }}</span>
   </div>

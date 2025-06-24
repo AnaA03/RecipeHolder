@@ -27,9 +27,9 @@ ngOnInit(): void {
   if (recipeId) {
     this.recipeService.getRecipeById(recipeId).subscribe((data) => {
       this.recipe = data;
-      console.log("recipe whole data....",this.recipe);
+      //console.log("recipe whole data....",this.recipe);
       this.embedUrl = this.getEmbedUrl(this.recipe.recipeLink);
-      console.log("embadeddd...",this.embedUrl);
+      //console.log("embadeddd...",this.embedUrl);
     });
   }
 }

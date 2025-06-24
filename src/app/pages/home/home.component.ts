@@ -10,6 +10,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { Category, Recipe, RecipeService } from '../../services/recipe.service';
 import { firstValueFrom } from 'rxjs';
 import introJs from 'intro.js';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
     private modal: NzModalService,
-    private recipeService: RecipeService
+    private recipeService: RecipeService,
+    private authService: AuthService
   ) { }
 
 ngAfterViewInit() {
@@ -83,9 +85,8 @@ ngAfterViewInit() {
   }
 }
 
-
-
-  ngOnInit() {
+  async ngOnInit() {
+    await this.authService.authReady;
     this.seedPredefinedCategories(); // seed categories
     this.loadRecipes();              // load recipes
   }

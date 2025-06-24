@@ -8,30 +8,35 @@ import { onAuthStateChanged } from 'firebase/auth';
 export class AuthService {
 
  currentUser: User | null = null;
+  private _authReadyResolver!: (value: User) => void;
+  authReady: Promise<User>;
 
   constructor(private auth: Auth) {
+    // Setup authReady promise
+    this.authReady = new Promise(resolve => {
+      this._authReadyResolver = resolve;
+    });
+
     this.initAuth();
   }
 
   async initAuth() {
-    onAuthStateChanged(this.auth, user => {
+    onAuthStateChanged(this.auth, async (user) => {
       if (user) {
         this.currentUser = user;
-        console.log('Logged in as anonymous user:', user.uid);
+        console.log('User authenticated:', user.uid);
+        this._authReadyResolver(user); // ✅ Resolve ready when user is available
       } else {
-        this.signIn();
+        try {
+          const result = await signInAnonymously(this.auth);
+          this.currentUser = result.user;
+          console.log('Signed in anonymously:', result.user.uid);
+          this._authReadyResolver(result.user); // ✅ Resolve here for first-time users
+        } catch (error) {
+          console.error('Anonymous sign-in failed:', error);
+        }
       }
     });
-  }
-
-  async signIn() {
-    try {
-      const userCredential = await signInAnonymously(this.auth);
-      this.currentUser = userCredential.user;
-      console.log('Signed in anonymously:', this.currentUser.uid);
-    } catch (error) {
-      console.error('Anonymous sign-in failed:', error);
-    }
   }
 
   getUserId(): string | null {
