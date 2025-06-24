@@ -33,7 +33,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   recipes: Recipe[] = [];
 
   constructor(
-    @Inject(DOCUMENT) private document: Document,
     private router: Router,
     private modal: NzModalService,
     private recipeService: RecipeService
@@ -113,7 +112,7 @@ ngAfterViewInit() {
   loadRecipes(): void {
     this.recipeService.getRecipes().subscribe((data) => {
       this.recipes = data;
-      console.log('Loaded recipes:', this.recipes);
+      //console.log('Loaded recipes:', this.recipes);
     });
   }
 
@@ -125,7 +124,6 @@ ngAfterViewInit() {
 
   onSelectCategory(catId: string | null): void {
     this.selectedCategoryId = catId;
-    this.closeMenu();
   }
 
   getCategoryNameById(id: string): string {
@@ -141,7 +139,7 @@ ngAfterViewInit() {
 
     modalRef.afterClose.subscribe((categoryName: string) => {
       if (categoryName) {
-        console.log('Added category:', categoryName);
+       // console.log('Added category:', categoryName);
       }
     });
   }
@@ -150,14 +148,6 @@ ngAfterViewInit() {
     this.router.navigate(['/recipe'], {
       state: { categories: this.categories }
     });
-  }
-
-  openMenu() {
-    this.sidebarVisible = true;
-  }
-
-  closeMenu() {
-    this.sidebarVisible = false;
   }
 
   onRecipeClick(recipe: Recipe): void {

@@ -10,8 +10,8 @@ import {
 } from '@angular/fire/firestore';
 import { doc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { DeviceIdService } from './device-id.service';
 import { getDocs } from '@angular/fire/firestore';
+import { AuthService } from './auth.service';
 
 export interface Category {
   id: string | null;
@@ -34,12 +34,18 @@ export interface Recipe {
 export class RecipeService {
   constructor(
     private firestore: Firestore,
-    private deviceIdService: DeviceIdService
+    private authService:AuthService
   ) { }
+
+  getUserId(): string {
+  const uid = this.authService.getUserId();
+  if (!uid) throw new Error('User not authenticated');
+  return uid;
+}
 
   // Category Methods
   async addCategory(name: string): Promise<void> {
-    const userId = this.deviceIdService.getDeviceId();
+    const userId = this.getUserId();
     const catRef = collection(this.firestore, 'categories');
 
     // 🔍 Case-insensitive duplicate check
@@ -55,7 +61,7 @@ export class RecipeService {
   }
 
   getCategories(): Observable<Category[]> {
-    const userId = this.deviceIdService.getDeviceId();
+    const userId = this.getUserId();;
     const catRef = collection(this.firestore, 'categories');
     const q = query(catRef, where('userId', '==', userId));
     return collectionData(q, { idField: 'id' }) as Observable<Category[]>;
@@ -78,13 +84,13 @@ export class RecipeService {
     recipeDesc: string;
     categoryId: string;
   }): Promise<void> {
-    const userId = this.deviceIdService.getDeviceId();
+    const userId = this.getUserId();
     const recipeRef = collection(this.firestore, 'recipes');
     await addDoc(recipeRef, { ...recipe, userId });
   }
 
   getRecipes(): Observable<Recipe[]> {
-    const userId = this.deviceIdService.getDeviceId();
+    const userId = this.getUserId();
     const recipeRef = collection(this.firestore, 'recipes');
     const q = query(recipeRef, where('userId', '==', userId));
     return collectionData(q, { idField: 'id' }) as Observable<Recipe[]>;

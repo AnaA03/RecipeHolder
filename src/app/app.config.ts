@@ -12,6 +12,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 
 
 registerLocaleData(hi);
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
        provideHttpClient(),
        NzModalService,
        provideFirebaseApp(() => initializeApp(environment.firebase)),
+       provideAuth(() => getAuth()),
        provideFirestore(() => getFirestore()),
       provideRouter(routes),]
 };
