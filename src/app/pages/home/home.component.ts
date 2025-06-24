@@ -39,10 +39,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private recipeService: RecipeService
   ) { }
 
-  ngAfterViewInit() {
-    const hasSeenTour = localStorage.getItem('hasSeenTour');
-    if (!hasSeenTour) {
-    introJs().setOptions({
+ngAfterViewInit() {
+  const hasSeenTour = localStorage.getItem('hasSeenTour');
+
+  if (!hasSeenTour) {
+    const tour = introJs();
+    tour.setOptions({
       steps: [
         {
           intro: 'Welcome to *RecipeHolder* - your personal space to save, organize, and manage all your favorite recipe links!',
@@ -60,14 +62,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
           intro: 'Use this button to *add recipe links* - YouTube videos - use share button or copy link and save them for future reference.',
         },
         {
-          intro: '🎉 That’s it! You’re all set.Start organizing and never lose a delicious recipe again!',
+          intro: '🎉 That’s it! You’re all set. Start organizing and never lose a delicious recipe again!',
         }
-
       ],
       showProgress: true
-    }).start();
+    });
+
+    tour.oncomplete(() => {
+      //console.log('Tour completed, setting hasSeenTour = true');
+      localStorage.setItem('hasSeenTour', 'true');
+    });
+
+    tour.onexit(() => {
+      //console.log('Tour exited, setting hasSeenTour = true');
+      localStorage.setItem('hasSeenTour', 'true');
+    });
+
+    tour.start();
+  } else {
+    console.log('Tour not started because hasSeenTour is true');
   }
 }
+
+
 
   ngOnInit() {
     this.seedPredefinedCategories(); // seed categories

@@ -8,6 +8,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { Router } from '@angular/router';
 import { Category, RecipeService } from '../../services/recipe.service';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -33,11 +34,6 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
   query: string = '';
   isCseReady = false;
 
-  ngOnInit() {
-    this.checkScreen();
-    window.addEventListener('resize', () => this.checkScreen());
-  }
-
   ngAfterViewInit() {
     const cx = 'c056cd0c7ff67463a'; // Replace with your ID
     const script = document.createElement('script');
@@ -52,7 +48,7 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
   }
 
 
-  constructor(private fb: FormBuilder, private router: Router, private recipeService: RecipeService) {
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private recipeService: RecipeService) {
     const nav = this.router.getCurrentNavigation();
     const state = nav?.extras.state as { categories: Category[] };
     this.categories = state?.categories || [];
@@ -73,6 +69,19 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
       category: [null, Validators.required]
     });
 
+  }
+
+    ngOnInit() {
+    this.checkScreen();
+    window.addEventListener('resize', () => this.checkScreen());
+
+    this.route.queryParamMap.subscribe(params => {
+    const sharedLink = params.get('sharedLink');
+    if (sharedLink) {
+      this.recipeForm.patchValue({ link: decodeURIComponent(sharedLink) });
+    }
+  });
+  
   }
 
   onSubmit(): void {
