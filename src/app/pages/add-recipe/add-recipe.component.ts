@@ -41,8 +41,6 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
     script.async = true;
     script.src = `https://cse.google.com/cse.js?cx=${cx}`;
     document.body.appendChild(script);
-    localStorage.setItem('lastRoute', this.router.url);
-
   }
 
   checkScreen() {
@@ -50,8 +48,7 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
   }
 
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private recipeService: RecipeService) 
-  {
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private recipeService: RecipeService) {
     this.recipeForm = this.fb.group({
       name: ['', Validators.required],
       link: [
@@ -69,37 +66,37 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
 
   }
 
-    ngOnInit() {
+  ngOnInit() {
     this.checkScreen();
     window.addEventListener('resize', () => this.checkScreen());
 
     // First try to get categories from navigation (if present)
-  const nav = this.router.getCurrentNavigation();
-  const state = nav?.extras?.state as { categories: Category[] };
+    const nav = this.router.getCurrentNavigation();
+    const state = nav?.extras?.state as { categories: Category[] };
 
-  if (state?.categories?.length) {
-    this.categories = state.categories;
-    console.log('Categories from navigation:', this.categories);
-  } else {
-    // Fallback: Load categories from Firestore if not passed via state
-    this.recipeService.getCategories().subscribe(categories => {
-      this.categories = categories;
-      console.log('Categories from Firestore:', this.categories);
+    if (state?.categories?.length) {
+      this.categories = state.categories;
+      console.log('Categories from navigation:', this.categories);
+    } else {
+      // Fallback: Load categories from Firestore if not passed via state
+      this.recipeService.getCategories().subscribe(categories => {
+        this.categories = categories;
+        console.log('Categories from Firestore:', this.categories);
 
-      // Auto-fill category if only one
-      if (this.categories.length === 1) {
-        this.recipeForm.patchValue({ category: this.categories[0].id });
-      }
-    });
-  }
+        // Auto-fill category if only one
+        if (this.categories.length === 1) {
+          this.recipeForm.patchValue({ category: this.categories[0].id });
+        }
+      });
+    }
 
     this.route.queryParamMap.subscribe(params => {
-    const sharedLink = params.get('sharedLink');
-    if (sharedLink) {
-      this.recipeForm.patchValue({ link: decodeURIComponent(sharedLink) });
-    }
-  });
- 
+      const sharedLink = params.get('sharedLink');
+      if (sharedLink) {
+        this.recipeForm.patchValue({ link: decodeURIComponent(sharedLink) });
+      }
+    });
+
   }
 
   onSubmit(): void {
@@ -127,7 +124,7 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
   onCancel(): void {
     this.recipeForm.reset();
   }
-    goBack(): void {
+  goBack(): void {
     this.router.navigate(['/home']);
   }
 }
