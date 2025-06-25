@@ -92,6 +92,8 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
 
     this.route.queryParamMap.subscribe(params => {
       const sharedLink = params.get('sharedLink');
+      console.log('Shared link:', sharedLink);
+    alert('Shared link: ' + sharedLink); 
       if (sharedLink) {
         this.recipeForm.patchValue({ link: decodeURIComponent(sharedLink) });
       }
