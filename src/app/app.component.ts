@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -8,7 +8,19 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+   constructor(private router: Router) {}
 
+ngOnInit(): void {
+    const lastRoute = localStorage.getItem('lastRoute');
+
+    if (lastRoute && this.router.url === '/home') {
+      // Only redirect if app restarted at base path
+      setTimeout(() => {
+        this.router.navigateByUrl(lastRoute!);
+        localStorage.removeItem('lastRoute');
+      }, 100); // allow Angular init
+    }
+  }
 }
 
