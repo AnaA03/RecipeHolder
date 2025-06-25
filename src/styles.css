@@ -64,20 +64,19 @@ body {
   font-weight: 500;
 }
 
-/* Hover effect */
-.introjs-button:hover {
-  background-color: #1890ff !important;
-}
 
 /* Highlighted element shadow only */
 .introjs-helperLayer {
-  box-shadow: 0 0 0 4px rgba(24, 144, 255, 0.3) !important; /* Glow effect */
+ /*  box-shadow: 0 0 0 4px rgba(24, 144, 255, 0.3) !important; */ /* Glow effect */
   border: none !important; /* Remove border */
   border-radius: 4px !important;
 }
 .introjs-tooltip-header {
   padding: 8px !important; 
   margin-bottom: 0 !important;
+}
+.introjs-button:focus {
+    box-shadow: none !important;
 }
 
 .introjs-tooltiptext{
