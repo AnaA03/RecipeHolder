@@ -63,12 +63,18 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
       description: [''],
       category: [null, Validators.required]
     });
-
   }
 
   ngOnInit() {
     this.checkScreen();
     window.addEventListener('resize', () => this.checkScreen());
+    
+    this.route.queryParamMap.subscribe(params => {
+      const sharedLink = params.get('sharedLink');
+      if (sharedLink) {
+        this.recipeForm.patchValue({ link: decodeURIComponent(sharedLink) });
+      }
+    });
 
     // First try to get categories from navigation (if present)
     const nav = this.router.getCurrentNavigation();
@@ -89,13 +95,6 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
         }
       });
     }
-
-    this.route.queryParamMap.subscribe(params => {
-      const sharedLink = params.get('sharedLink');
-      if (sharedLink) {
-        this.recipeForm.patchValue({ link: decodeURIComponent(sharedLink) });
-      }
-    });
   }
 
   onSubmit(): void {
