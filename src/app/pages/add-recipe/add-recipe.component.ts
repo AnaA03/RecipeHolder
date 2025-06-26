@@ -64,35 +64,33 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
       category: [null, Validators.required]
     });
   }
+async ngOnInit() {
+  this.checkScreen();
+  window.addEventListener('resize', () => this.checkScreen());
 
-  ngOnInit() {
-    this.checkScreen();
-    window.addEventListener('resize', () => this.checkScreen());
-    
-    this.route.queryParamMap.subscribe(params => {
-      const sharedLink = params.get('sharedLink');
-      if (sharedLink) {
-        this.recipeForm.patchValue({ link: decodeURIComponent(sharedLink) });
-      }
-    });
-    this.loadCategories();
-  }
-
-  loadCategories(){
-    this.recipeService.getCategories().subscribe({
-    next: (categories) => {
-      this.categories = categories;
-      console.log('Categories from Firestore:', categories);
-
-      if (categories.length === 1) {
-        this.recipeForm.patchValue({ category: categories[0].id });
-      }
-    },
-    error: (err) => {
-      console.error('Failed to load categories:', err);
+  this.route.queryParamMap.subscribe(params => {
+    const sharedLink = params.get('sharedLink');
+    if (sharedLink) {
+      this.recipeForm.patchValue({ link: decodeURIComponent(sharedLink) });
     }
   });
-  }
+
+  // 🔐 Wait for user to be signed in
+  const userId = await this.recipeService.waitForUserId();
+  console.log('Firebase UID ready:', userId);
+
+  this.recipeService.getCategories().subscribe(categories => {
+    this.categories = categories;
+    console.log('Categories loaded:', categories);
+
+    if (categories.length === 1) {
+      this.recipeForm.patchValue({ category: categories[0].id });
+    }
+  });
+}
+
+
+
 
     // First try to get categories from navigation (if present)
     //const nav = this.router.getCurrentNavigation();

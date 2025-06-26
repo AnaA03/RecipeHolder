@@ -46,6 +46,11 @@ getUserId(): string {
   return uid;
 }
 
+async waitForUserId(): Promise<string> {
+  const user = await this.authService.authReady;
+  return user.uid;
+}
+
   // Category Methods
   async addCategory(name: string): Promise<void> {
     const userId = this.getUserId();
