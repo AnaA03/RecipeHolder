@@ -79,8 +79,7 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
   }
 
   loadCategories(){
-    alert("this.categories");
-      this.recipeService.getCategories().subscribe({
+    this.recipeService.getCategories().subscribe({
     next: (categories) => {
       this.categories = categories;
       console.log('Categories from Firestore:', categories);
