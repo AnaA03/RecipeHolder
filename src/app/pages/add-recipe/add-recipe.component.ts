@@ -77,8 +77,9 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
     });
     this.loadCategories();
   }
-  
+
   loadCategories(){
+    alert("this.categories");
       this.recipeService.getCategories().subscribe({
     next: (categories) => {
       this.categories = categories;
