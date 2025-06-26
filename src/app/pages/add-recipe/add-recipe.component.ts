@@ -75,12 +75,30 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
         this.recipeForm.patchValue({ link: decodeURIComponent(sharedLink) });
       }
     });
+    this.loadCategories();
+  }
+  
+  loadCategories(){
+      this.recipeService.getCategories().subscribe({
+    next: (categories) => {
+      this.categories = categories;
+      console.log('Categories from Firestore:', categories);
+
+      if (categories.length === 1) {
+        this.recipeForm.patchValue({ category: categories[0].id });
+      }
+    },
+    error: (err) => {
+      console.error('Failed to load categories:', err);
+    }
+  });
+  }
 
     // First try to get categories from navigation (if present)
-    const nav = this.router.getCurrentNavigation();
-    const state = nav?.extras?.state as { categories: Category[] };
+    //const nav = this.router.getCurrentNavigation();
+    //const state = nav?.extras?.state as { categories: Category[] };
 
-    if (state?.categories?.length) {
+/*     if (state?.categories?.length) {
       this.categories = state.categories;
       console.log('Categories from navigation:', this.categories);
     } else {
@@ -94,8 +112,9 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
           this.recipeForm.patchValue({ category: this.categories[0].id });
         }
       });
-    }
-  }
+    } */
+//  }
+
 
   onSubmit(): void {
     if (this.recipeForm.invalid) {
