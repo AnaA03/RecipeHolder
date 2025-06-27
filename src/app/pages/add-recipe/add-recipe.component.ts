@@ -34,19 +34,49 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
   query: string = '';
   isCseReady = false;
 
-  ngAfterViewInit() {
+/*   ngAfterViewInit() {
     const cx = 'c056cd0c7ff67463a'; // Replace with your ID
     const script = document.createElement('script');
     script.type = 'text/javascript';
     script.async = true;
     script.src = `https://cse.google.com/cse.js?cx=${cx}`;
     document.body.appendChild(script);
-    //localStorage.setItem('returnTo', '/recipe');
+  } */
+
+    ngAfterViewInit(): void {
+  const cx = 'c056cd0c7ff67463a'; // ✅ Your CSE ID
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.async = true;
+  script.src = `https://cse.google.com/cse.js?cx=${cx}`;
+  document.body.appendChild(script);
+
+  // ✅ Now hook into YouTube links after CSE loads
+  const observer = new MutationObserver(() => {
+    const links = document.querySelectorAll('.gsc-webResult a');
+    links.forEach(link => {
+      const href = (link as HTMLAnchorElement).href;
+      if (href.includes('youtube.com') || href.includes('youtu.be')) {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          this.openYouTube(href);
+        });
+      }
+    });
+  });
+
+  const searchBox = document.getElementById('search-box');
+  if (searchBox) {
+    observer.observe(searchBox, { childList: true, subtree: true });
   }
+}
+
+
 
   checkScreen() {
     this.isMobile = window.innerWidth <= 768;
   }
+
 
 
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private recipeService: RecipeService) {
@@ -89,6 +119,13 @@ async ngOnInit() {
     }
   });
 }
+
+openYouTube(link: string) {
+  localStorage.setItem('returnTo', '/recipe');
+  console.log('[CSE] YouTube link clicked:', link);
+  window.open(link, '_blank');
+}
+
 
   onSubmit(): void {
     if (this.recipeForm.invalid) {
