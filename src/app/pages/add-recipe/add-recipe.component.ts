@@ -41,6 +41,7 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
     script.async = true;
     script.src = `https://cse.google.com/cse.js?cx=${cx}`;
     document.body.appendChild(script);
+    localStorage.setItem('returnTo', '/add-recipe');
   }
 
   checkScreen() {
@@ -88,31 +89,6 @@ async ngOnInit() {
     }
   });
 }
-
-
-
-
-    // First try to get categories from navigation (if present)
-    //const nav = this.router.getCurrentNavigation();
-    //const state = nav?.extras?.state as { categories: Category[] };
-
-/*     if (state?.categories?.length) {
-      this.categories = state.categories;
-      console.log('Categories from navigation:', this.categories);
-    } else {
-      // Fallback: Load categories from Firestore if not passed via state
-      this.recipeService.getCategories().subscribe(categories => {
-        this.categories = categories;
-        console.log('Categories from Firestore:', this.categories);
-
-        // Auto-fill category if only one
-        if (this.categories.length === 1) {
-          this.recipeForm.patchValue({ category: this.categories[0].id });
-        }
-      });
-    } */
-//  }
-
 
   onSubmit(): void {
     if (this.recipeForm.invalid) {

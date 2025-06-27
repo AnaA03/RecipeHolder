@@ -9,10 +9,17 @@ import { Router, RouterModule } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-   constructor(private router: Router) {}
+  constructor(private router: Router) {}
 
-ngOnInit(): void {
-
+  ngOnInit(): void {
+    const returnTo = localStorage.getItem('returnTo');
+    if (returnTo) {
+      localStorage.removeItem('returnTo');
+      // Wait a moment for router to initialize
+      setTimeout(() => {
+        this.router.navigateByUrl(returnTo);
+      }, 100); // Delay helps if router isn't ready yet
+    }
   }
 }
 
