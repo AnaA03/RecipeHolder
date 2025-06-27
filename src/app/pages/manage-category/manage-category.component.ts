@@ -45,6 +45,11 @@ export class ManageCategoryComponent implements OnInit {
       this.categories = data;
       console.log(this.categories);
     });
+    const userLang = navigator.language;
+console.log(userLang); // Might print 'hi-IN' in WebView
+console.log('Language:', navigator.language);
+console.log('Modal content:', this.isDeleteModalVisible, this.isRenameModalVisible);
+
   }
   goBack(): void {
     this.router.navigate(['/home']);

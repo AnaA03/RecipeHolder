@@ -2,7 +2,7 @@ import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom } fr
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
-import { hi_IN, provideNzI18n } from 'ng-zorro-antd/i18n';
+import { en_US, hi_IN, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import hi from '@angular/common/locales/hi';
 import { FormsModule } from '@angular/forms';
@@ -15,11 +15,12 @@ import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 
 
+
 registerLocaleData(hi);
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
-     provideRouter(routes), provideNzI18n(hi_IN), importProvidersFrom(FormsModule),
+     provideRouter(routes), provideNzI18n(en_US), importProvidersFrom(FormsModule),
       provideAnimationsAsync(),
        provideHttpClient(),
        NzModalService,
