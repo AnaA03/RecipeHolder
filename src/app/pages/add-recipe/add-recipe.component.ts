@@ -41,7 +41,7 @@ export class AddRecipeComponent implements OnInit, AfterViewInit {
     script.async = true;
     script.src = `https://cse.google.com/cse.js?cx=${cx}`;
     document.body.appendChild(script);
-    localStorage.setItem('returnTo', '/recipe');
+    //localStorage.setItem('returnTo', '/recipe');
   }
 
   checkScreen() {
