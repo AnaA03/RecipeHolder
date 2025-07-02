@@ -48,7 +48,7 @@ ngAfterViewInit() {
     tour.setOptions({
       steps: [
         {
-          intro: 'Welcome to *RecipeHolder* - your personal space to save, organize, and manage all your favorite recipe links!',
+          intro: 'Welcome to RecipeHolder - your personal space to save, organize, and manage all your favorite recipe links!',
         },
         {
           element: document.querySelector('.add-category-btn') as HTMLElement,
@@ -56,17 +56,17 @@ ngAfterViewInit() {
         },
         {
           element: document.querySelector('.menu-icon') as HTMLElement,
-          intro: 'Tap here to *manage your categories* — rename or delete.',
+          intro: 'Tap here to manage your categories — rename or delete.',
         },
         {
           element: document.querySelector('.floating-plus-btn') as HTMLElement,
-          intro: 'Use this button to *add recipe links* - YouTube videos - use share button or copy link and save them for future reference.',
+          intro: 'Use this button to add recipe links - YouTube videos - use share button or copy link and save them for future reference.',
         },
         {
-          intro: '🎉 That’s it! You’re all set. Start organizing and never lose a delicious recipe again!',
+          intro: 'Done! You are all set. Start organizing and never lose a delicious recipe again!',
         }
       ],
-      showProgress: true
+        
     });
 
     tour.oncomplete(() => {
