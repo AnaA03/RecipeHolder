@@ -64,7 +64,22 @@ body {
   margin-bottom: 0 !important;
 }
 
-
 .introjs-tooltiptext{
   padding: 2px !important; 
+}
+
+/* Tooltip main container */
+.introjs-tooltip {
+  border-radius: 8px !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+  border: none !important;
+  padding: 16px 20px;
+  background-color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  max-width: 360px;
+}
+.introjs-button {
+  background-color: #1890ff !important;
+  text-shadow: none !important;
+  color: #ffffff !important;
 }
