@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.green.recipeholder",
+      "sha256_cert_fingerprints": [
+        "07:E5:EB:D8:D8:23:D2:36:3D:AE:10:CB:9C:D4:AC:C7:34:A9:BC:34:CE:9A:17:C4:10:DE:08:BD:15:1D:11:E6"
+      ]
+    }
+  }
+]
